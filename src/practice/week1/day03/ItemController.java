@@ -1,6 +1,5 @@
 package over.rental.manager.item;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,14 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ItemController {
 
     @GetMapping("/items/new")
-    public String item(){
+    public String items(){
         return "items/new";
     }
 
     @PostMapping("/items")
-    public String createItem(ItemForm form){
-        System.out.println("물건명: " + form.getName());
-        System.out.println("설명: " + form.getDescription());
+    public String createItem(){
+        System.out.println("물건 등록 요청 도착");
         return "redirect:/items/new";
     }
 }

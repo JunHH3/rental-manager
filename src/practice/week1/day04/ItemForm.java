@@ -5,7 +5,6 @@ public class ItemForm {
     private String name;
     private String description;
 
-    // spring이 입력 값을 넣어야 함
     public String getName() {
         return name;
     }
@@ -21,4 +20,6 @@ public class ItemForm {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }

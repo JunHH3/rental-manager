@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 public class Item {
 
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,11 +35,4 @@ public class Item {
     public String getDescription() {
         return description;
     }
-
-    public void update(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-
 }

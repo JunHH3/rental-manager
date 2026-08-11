@@ -20,7 +20,6 @@ public class ItemController {
         return "items/new";
     }
 
-    //등록
     @PostMapping("/items")
     public String createItem(ItemForm form){
 
@@ -34,38 +33,17 @@ public class ItemController {
         return "redirect:/items/new";
     }
 
-    //조회
     @GetMapping("/items")
     public String items(Model model){
         Iterable<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
-        return "/items/index";
+        return "items/index";
     }
 
-    //상세조회
     @GetMapping("/items/{id}")
-    public String itemDetail(@PathVariable Long id, Model model){
+    public String itemDetail(@PathVariable Long id, Model model) {
         Item item = itemRepository.findById(id).orElseThrow();
         model.addAttribute("item", item);
         return "items/detail";
     }
-
-    //수정 화면
-    @GetMapping("/items/{id}/edit")
-    public String editItem(@PathVariable Long id, Model model) {
-        Item item = itemRepository.findById(id).orElseThrow();
-        model.addAttribute("item", item);
-        return "/items/edit";
-    }
-
-    //수정
-    @PostMapping("/items/{id}/edit")
-    public String updateItem(@PathVariable Long id, ItemForm form) {
-        Item item = itemRepository.findById(id).orElseThrow();
-        item.update(form.getName(), form.getDescription());
-        itemRepository.save(item);
-        return "redirect:/items/" + id;
-    }
-
-
 }

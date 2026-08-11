@@ -5,6 +5,7 @@ public class ItemForm {
     private String name;
     private String description;
 
+
     public String getName() {
         return name;
     }
@@ -20,5 +21,4 @@ public class ItemForm {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

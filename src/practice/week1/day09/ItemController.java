@@ -20,7 +20,7 @@ public class ItemController {
         return "items/new";
     }
 
-    //상품등록화면
+    //등록
     @PostMapping("/items")
     public String createItem(ItemForm form){
 
@@ -28,7 +28,7 @@ public class ItemController {
 
         itemRepository.save(item);
 
-        System.out.println("상품번호 " + item.getId());
+        System.out.println("물건 번호 " + item.getId());
         System.out.println("상품명 " + item.getName());
         System.out.println("설명 " + item.getDescription());
         return "redirect:/items/new";
@@ -39,23 +39,23 @@ public class ItemController {
     public String items(Model model){
         Iterable<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
-        return "items/index";
+        return "/items/index";
     }
 
     //상세조회
     @GetMapping("/items/{id}")
-    public String detailItem(@PathVariable Long id, Model model){
+    public String itemDetail(@PathVariable Long id, Model model){
         Item item = itemRepository.findById(id).orElseThrow();
         model.addAttribute("item", item);
         return "items/detail";
     }
 
-    //수정화면
+    //수정 화면
     @GetMapping("/items/{id}/edit")
-    public String editItem(@PathVariable Long id, Model model){
+    public String editItem(@PathVariable Long id, Model model) {
         Item item = itemRepository.findById(id).orElseThrow();
         model.addAttribute("item", item);
-        return "items/edit";
+        return "/items/edit";
     }
 
     //수정
@@ -67,11 +67,5 @@ public class ItemController {
         return "redirect:/items/" + id;
     }
 
-    //삭제
-    @PostMapping("/items/{id}/delete")
-    public String deleteItem(@PathVariable Long id) {
-        itemRepository.deleteById(id);
-        return "redirect:/items";
-    }
 
 }

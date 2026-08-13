@@ -3,3 +3,7 @@
 <p>{{item.description}}</p>
 
 <a href="/items/{{item.id}}/edit">수정</a>
+
+<form action="/items/{{item.id}}/delete" method="post">
+    <button type="submit">삭제</button>
+</form>

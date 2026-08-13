@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Item {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,4 +39,6 @@ public class Item {
         this.name = name;
         this.description = description;
     }
+
+
 }

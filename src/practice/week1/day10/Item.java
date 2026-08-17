@@ -14,14 +14,12 @@ public class Item {
 
     private String name;
     private String description;
-    private RentalStatus rentalStatus;
 
     protected Item(){}
 
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
-        this.rentalStatus = RentalStatus.AVAILABLE;
     }
 
     public Long getId() {
@@ -36,28 +34,8 @@ public class Item {
         return description;
     }
 
-    public RentalStatus getRentalStatus() {
-        return rentalStatus;
-    }
-
     public void update(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public void rent() {
-        this.rentalStatus = RentalStatus.RENTED;
-    }
-
-    public boolean isRented() {
-        return rentalStatus == RentalStatus.RENTED;
-    }
-
-    public void returnItem(){
-        this.rentalStatus = RentalStatus.AVAILABLE;
-    }
-
-    public boolean isAvailable(){
-        return rentalStatus == RentalStatus.AVAILABLE;
     }
 }

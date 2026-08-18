@@ -1,7 +1,9 @@
 package over.rental.manager.item;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,13 @@ public class ItemController {
 
     //상품등록화면
     @PostMapping("/items")
-    public String createItem(ItemForm form){
+    public String createItem(@Valid ItemForm form, BindingResult bindingResult, Model model){
+
+        if(bindingResult.hasErrors()){
+            String error = bindingResult.getFieldError("name").getDefaultMessage();
+            model.addAttribute("error", error);
+            return "items/new";
+        }
 
         Item item = new Item(form.getName(), form.getDescription());
 

@@ -53,7 +53,9 @@ public class ItemController {
     //상세조회
     @GetMapping("/items/{id}")
     public String detailItem(@PathVariable Long id, Model model){
-        Item item = itemRepository.findById(id).orElseThrow();
+
+        System.out.println("detailItem 진입 id = " + id);
+        Item item = itemRepository.findById(id).orElseThrow(()-> new ItemNotFoundException("물건을 찾을 수 없습니다."));
         model.addAttribute("item", item);
         return "items/detail";
     }

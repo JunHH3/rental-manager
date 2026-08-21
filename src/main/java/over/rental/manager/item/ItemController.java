@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ItemController {
@@ -44,8 +45,15 @@ public class ItemController {
 
     //조회
     @GetMapping("/items")
-    public String items(Model model){
-        Iterable<Item> items = itemRepository.findAll();
+    public String items(@RequestParam(required = false) String keyword, Model model){
+
+        Iterable<Item> items;
+
+        if (keyword == null) {
+            items = itemRepository.findAll();
+        } else {
+            items = itemRepository.findByNameContaining(keyword);
+        }
         model.addAttribute("items", items);
         return "items/index";
     }

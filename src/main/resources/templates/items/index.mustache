@@ -1,4 +1,11 @@
 <h1>물건 목록</h1>
+
+<form action="/items" method="get">
+    <input type="text" name="keyword">
+    <button type="submit">검색</button>
+</form>
+
+
 {{#items}}
     <h2><a href="/items/{{id}}"> {{name}}</a></h2>
     <p>{{description}}</p>

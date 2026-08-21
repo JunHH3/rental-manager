@@ -1,6 +1,9 @@
 package over.rental.manager.item;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ItemController {
@@ -45,16 +49,26 @@ public class ItemController {
 
     //조회
     @GetMapping("/items")
-    public String items(@RequestParam(required = false) String keyword, Model model){
+    public String items(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "0")int page, Model model){
 
-        Iterable<Item> items;
+        Pageable pageable = PageRequest.of(page, 5);
 
-        if (keyword == null) {
-            items = itemRepository.findAll();
+        Page<Item> itemPage;
+
+        if (keyword.isBlank()) {
+            itemPage = itemRepository.findAll(pageable);
         } else {
-            items = itemRepository.findByNameContaining(keyword);
+            itemPage = itemRepository.findByNameContaining(keyword, pageable);
         }
-        model.addAttribute("items", items);
+
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("items", itemPage.getContent());
+        model.addAttribute("currentPage", itemPage.getNumber());
+        model.addAttribute("totalPages", itemPage.getTotalPages());
+        model.addAttribute("hasNext", itemPage.hasNext());
+        model.addAttribute("hasPrevious", itemPage.hasPrevious());
+        model.addAttribute("previousPage", itemPage.getNumber() -1);
+        model.addAttribute("nextPage", itemPage.getNumber() +1);
         return "items/index";
     }
 
@@ -62,7 +76,6 @@ public class ItemController {
     @GetMapping("/items/{id}")
     public String detailItem(@PathVariable Long id, Model model){
 
-        System.out.println("detailItem 진입 id = " + id);
         Item item = itemRepository.findById(id).orElseThrow(()-> new ItemNotFoundException("물건을 찾을 수 없습니다."));
         model.addAttribute("item", item);
         return "items/detail";

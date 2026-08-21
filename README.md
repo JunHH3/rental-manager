@@ -42,3 +42,17 @@ Spring MVC의 요청 처리 흐름과 Spring Data JPA를 이용한 데이터 영
 → ItemRepository
 → DB 삭제
 ```
+
+
+### 물건 검색 및 페이징
+
+검색어를 입력하면 상품명에 검색어가 포함된 물건을 조회하며,
+조회 결과를 페이지 단위로 나누어 표시합니다.
+
+```text
+검색어 / 페이지 요청
+→ ItemController
+→ ItemRepository
+→ Page<Item>
+→ 목록 화면
+```

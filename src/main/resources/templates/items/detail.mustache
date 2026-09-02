@@ -7,3 +7,17 @@
 <form action="/items/{{item.id}}/delete" method="post">
     <button type="submit">삭제</button>
 </form>
+
+
+<p>{{item.rentalStatus}}</p>
+{{#item.available}}
+    <form action="/items/{{item.id}}/rent" method="post">
+    <button type="submit">대여</button>
+    </form>
+{{/item.available}}
+
+{{#item.rented}}
+    <form action="/items/{{item.id}}/return" method="post">
+        <button type="submit">반납</button>
+    </form>
+{{/item.rented}}

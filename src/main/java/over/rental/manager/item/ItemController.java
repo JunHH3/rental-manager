@@ -74,4 +74,22 @@ public class ItemController {
         return "redirect:/items";
     }
 
+    //대여
+    @PostMapping("/items/{id}/rent")
+    public String rentItem(@PathVariable Long id) {
+        Item item = itemRepository.findById(id).orElseThrow();
+        item.rent();
+        itemRepository.save(item);
+        return "redirect:/items/" + id;
+    }
+
+    //반납
+    @PostMapping("/items/{id}/return")
+    public String returnItem(@PathVariable Long id) {
+        Item item = itemRepository.findById(id).orElseThrow();
+        item.returnRent();
+        itemRepository.save(item);
+        return "redirect:/items/" + id;
+    }
+
 }

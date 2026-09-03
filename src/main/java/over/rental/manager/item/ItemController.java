@@ -1,6 +1,9 @@
 package over.rental.manager.item;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,16 +48,28 @@ public class ItemController {
 
     //조회
     @GetMapping("/items")
-    public String items(@RequestParam(required = false) String keyword, Model model){
-        Iterable<Item> items;
+    public String items(@RequestParam(defaultValue = "") String keyword,
+                        @RequestParam(defaultValue = "0") int page,
+                        Model model){
 
-        if (keyword == null) {
-            items = itemRepository.findAll();
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Item> itemPage;
+
+        if (keyword.isBlank()) {
+            itemPage = itemRepository.findAll(pageable);
         } else {
-            items = itemRepository.findByNameContaining(keyword);
+            itemPage = itemRepository.findByNameContaining(keyword, pageable);
         }
 
-        model.addAttribute("items", items);
+        model.addAttribute("items", itemPage.getContent());
+        model.addAttribute("currentPage", itemPage.getNumber() + 1);
+        model.addAttribute("totalPages", itemPage.getTotalPages());
+        model.addAttribute("hasPrevious", itemPage.hasPrevious());
+        model.addAttribute("hasNext", itemPage.hasNext());
+        model.addAttribute("previousPage", itemPage.getNumber() - 1);
+        model.addAttribute("nextPage", itemPage.getNumber() + 1);
+        model.addAttribute("keyword", keyword);
+
         return "items/index";
     }
 

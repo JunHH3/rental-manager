@@ -10,3 +10,15 @@
     <p>{{description}}</p>
 {{/items}}
 
+
+<p>현재 페이지: {{currentPage}} / 전체 페이지: {{totalPages}}</p>
+
+{{#hasPrevious}}
+    <a href="/items?keyword={{keyword}}&page={{previousPage}}">이전</a>
+{{/hasPrevious}}
+
+{{#hasNext}}
+    <a href="/items?keyword={{keyword}}&page={{nextPage}}">다음</a>
+{{/hasNext}}
+
+

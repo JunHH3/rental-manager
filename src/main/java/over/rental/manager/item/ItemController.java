@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ItemController {
 
-    private final ItemRepository itemRepository;
+    private final ItemService itemService;
 
-    public ItemController(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
     }
 
     @GetMapping("/items/new")
@@ -36,9 +36,7 @@ public class ItemController {
             return "items/new";
         }
 
-        Item item = new Item(form.getName(), form.getDescription());
-
-        itemRepository.save(item);
+       Item item = itemService.createItem(form);
 
         System.out.println("상품번호 " + item.getId());
         System.out.println("상품명 " + item.getName());
@@ -53,13 +51,8 @@ public class ItemController {
                         Model model){
 
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Item> itemPage;
+        Page<Item> itemPage = itemService.findItems(keyword, pageable);
 
-        if (keyword.isBlank()) {
-            itemPage = itemRepository.findAll(pageable);
-        } else {
-            itemPage = itemRepository.findByNameContaining(keyword, pageable);
-        }
 
         model.addAttribute("items", itemPage.getContent());
         model.addAttribute("currentPage", itemPage.getNumber() + 1);
@@ -76,8 +69,7 @@ public class ItemController {
     //상세조회
     @GetMapping("/items/{id}")
     public String detailItem(@PathVariable Long id, Model model){
-        Item item = itemRepository.findById(id).orElseThrow(
-                ()-> new ItemNotFoundException("물건을 찾을 수 없습니다."));
+       Item item = itemService.findItem(id);
         model.addAttribute("item", item);
         return "items/detail";
     }
@@ -85,7 +77,7 @@ public class ItemController {
     //수정화면
     @GetMapping("/items/{id}/edit")
     public String editItem(@PathVariable Long id, Model model){
-        Item item = itemRepository.findById(id).orElseThrow();
+        Item item = itemService.findItem(id);
         model.addAttribute("item", item);
         return "items/edit";
     }
@@ -93,35 +85,28 @@ public class ItemController {
     //수정
     @PostMapping("/items/{id}/edit")
     public String updateItem(@PathVariable Long id, ItemForm form) {
-        Item item = itemRepository.findById(id).orElseThrow();
-        item.update(form.getName(), form.getDescription());
-        itemRepository.save(item);
+       itemService.updateItem(id, form);
         return "redirect:/items/" + id;
     }
 
     //삭제
     @PostMapping("/items/{id}/delete")
     public String deleteItem(@PathVariable Long id) {
-        itemRepository.deleteById(id);
+        itemService.deleteItem(id);
         return "redirect:/items";
     }
 
     //대여
     @PostMapping("/items/{id}/rent")
     public String rentItem(@PathVariable Long id) {
-        Item item = itemRepository.findById(id).orElseThrow();
-        item.rent();
-        itemRepository.save(item);
+        itemService.rentItem(id);
         return "redirect:/items/" + id;
     }
 
     //반납
     @PostMapping("/items/{id}/return")
     public String returnItem(@PathVariable Long id) {
-        Item item = itemRepository.findById(id).orElseThrow();
-        item.returnRent();
-        itemRepository.save(item);
+        itemService.returnItem(id);
         return "redirect:/items/" + id;
     }
-
 }

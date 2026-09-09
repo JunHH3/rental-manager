@@ -1,7 +1,9 @@
 package over.rental.manager.rental;
 
+import jakarta.persistence.JoinColumn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import over.rental.manager.item.Item;
 
 @Service
 public class RentalService {
@@ -13,8 +15,8 @@ public class RentalService {
     }
 
     @Transactional
-    public Rental createRental(String renterName) {
-        Rental rental = new Rental(renterName);
+    public Rental createRental(String renterName, Item item) {
+        Rental rental = new Rental(renterName, item);
         return rentalRepository.save(rental);
     }
 

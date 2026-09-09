@@ -1,9 +1,7 @@
 package over.rental.manager.rental;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import over.rental.manager.item.Item;
 
 import java.time.LocalDateTime;
 
@@ -34,5 +32,19 @@ public class Rental {
 
     public LocalDateTime getRentedAt() {
         return rentedAt;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
+
+    public Rental(String renterName, Item item) {
+        this.renterName = renterName;
+        this.rentedAt = LocalDateTime.now();
+        this.item = item;
+    }
+
+    public Item getItem() {
+        return item;
     }
 }

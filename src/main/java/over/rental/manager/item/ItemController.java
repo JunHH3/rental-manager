@@ -1,5 +1,6 @@
 package over.rental.manager.item;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import over.rental.manager.member.Member;
 
 @Controller
 public class ItemController {
@@ -98,7 +100,14 @@ public class ItemController {
 
     //대여
     @PostMapping("/items/{id}/rent")
-    public String rentItem(@PathVariable Long id) {
+    public String rentItem(@PathVariable Long id, HttpSession session) {
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+
+        if (loginMember == null) {
+            return "redirect:/";
+        }
+
         itemService.rentItem(id);
         return "redirect:/items/" + id;
     }

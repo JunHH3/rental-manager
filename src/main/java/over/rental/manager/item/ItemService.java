@@ -37,6 +37,12 @@ public class ItemService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public ItemDto findItemDto(Long id) {
+        Item item = findItem(id);
+        return ItemDto.from(item);
+    }
+
     @Transactional
     public void updateItem(Long id, ItemForm form) {
         Item item = findItem(id);

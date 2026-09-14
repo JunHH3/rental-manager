@@ -71,7 +71,7 @@ public class ItemController {
     //상세조회
     @GetMapping("/items/{id}")
     public String detailItem(@PathVariable Long id, Model model){
-       Item item = itemService.findItem(id);
+       ItemDto item = itemService.findItemDto(id);
         model.addAttribute("item", item);
         return "items/detail";
     }

@@ -44,6 +44,21 @@ public class ItemServiceTest {
 
     @Test
     @Transactional
+    void findItemDtoTest(){
+        ItemForm form = new ItemForm();
+        form.setName("카메라");
+        form.setDescription("테스트 카메라");
+        Item savedItem = itemService.createItem(form);
+        ItemDto itemDto = itemService.findItemDto(savedItem.getId());
+
+        assertEquals(savedItem.getId(), itemDto.getId());
+        assertEquals("카메라", itemDto.getName());
+        assertEquals("테스트 카메라", itemDto.getDescription());
+        assertEquals(savedItem.getRentalStatus(), itemDto.getRentalStatus());
+    }
+
+    @Test
+    @Transactional
     void updateItemTest(){
         ItemForm form = new ItemForm();
         form.setName("모니터");

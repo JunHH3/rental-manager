@@ -32,4 +32,12 @@ public class ItemApiControllerTest {
                 .andExpect(jsonPath("$.name").value("카메라"))
                 .andExpect(jsonPath("$.description").value("테스트 카메라"));
     }
+
+    @Test
+    @Transactional
+    void itemNotFoundApiTest() throws Exception {
+        mockMvc.perform(get("/api/items/{id}", 999999L))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("물건을 찾을 수 없습니다."));
+    }
 }

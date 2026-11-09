@@ -1,114 +1,80 @@
-# Rental Manager
 
-Spring Boot를 이용해 물품 등록, 대여·반납, 회원 로그인, REST API를 구현한 물품 대여 관리 웹 애플리케이션입니다.
+<div align="center">
 
-Controller-Service-Repository 계층을 분리하고,
-Spring Data JPA, 세션 로그인, DTO, 예외 처리, REST API 및 테스트를 직접 구현했습니다.
+# 📦 Rental Manager
 
-## 기술 스택
+### 물품 등록 · 대여 · 반납 관리 웹 애플리케이션
 
-- Java 21
-- Spring Boot
-- Spring Web
-- Spring Data JPA
-- Mustache
-- H2 Database
-- Gradle
-- JUnit 5 / MockMvc
+![Type](https://img.shields.io/badge/TYPE-BACKEND_PRACTICE-2563EB?style=for-the-badge)
+![Java](https://img.shields.io/badge/Java_21-007396?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 
-## 주요 기능
+</div>
 
-- 물품 등록 / 조회 / 수정 / 삭제
-- 물품 검색 및 페이징
-- 물품 대여 / 반납
-- 대여 기록 관리
-- 회원가입 / 로그인
-- HttpSession 기반 로그인 상태 관리
-- 로그인 사용자 대여 권한 확인
+## 🎯 Overview
+
+물품 등록부터 대여 및 반납 상태 관리까지 구현한 Spring Boot 기반 웹 애플리케이션입니다.
+
+MVC 패턴, JPA, 페이징, 세션 및 테스트를 학습하기 위해 개발했습니다.
+
+## ✨ Features
+
+- 물품 등록·조회·수정·삭제
+- 물품 이름 검색 및 페이징
+- 물품 대여 및 반납 상태 관리
+- 회원 데이터 저장 및 세션 로그인
+- 물품 조회 REST API
 - Entity / DTO 분리
-- REST API
-- API 예외 처리 및 JSON 오류 응답
+- 예외 처리 및 테스트 코드
+- 대여 기록 도메인 구성
 
-## 프로젝트 구조
+### Rental Status
 
 ```text
-Controller
-    ↓
-Service
-    ↓
-Repository
-    ↓
-Database
+AVAILABLE ↔ RENTED
 ```
 
-### 주요 도메인
+## 🛠 Tech Stack
+
+`Java 21` · `Spring Boot 4` · `Spring Data JPA` · `H2 Database` · `Mustache` · `Gradle` · `JUnit 5` · `MockMvc`
+
+## 🔌 API & Pages
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/items/{id}` | 물품 상세 조회 API |
+| GET | `/items` | 물품 목록 및 검색 |
+| POST | `/items` | 물품 등록 |
+| POST | `/items/{id}/rent` | 물품 대여 |
+| POST | `/items/{id}/return` | 물품 반납 |
+
+## 🧱 Domain
 
 ```text
 Item
-├─ 물품 정보 및 대여 상태
-│
-Rental
-├─ 대여자
-├─ 대여 시간
-└─ Item과 @ManyToOne 관계
+ └─ 물품 정보 및 대여 상태
 
 Member
-└─ 회원 및 로그인 정보
+ └─ 회원 정보 및 세션
+
+Rental
+ └─ 대여 기록 및 물품 연관관계
 ```
 
-## REST API
+## 🧪 Testing
 
-### 물품 상세 조회
+JUnit 5 및 MockMvc를 이용한 테스트 코드가 포함되어 있습니다.
 
-```http
-GET /api/items/{id}
-```
-
-정상 응답:
-
-```json
-{
-  "id": 1,
-  "name": "카메라",
-  "description": "배터리",
-  "rentalStatus": "AVAILABLE"
-}
-```
-
-존재하지 않는 물품 조회:
-
-```json
-{
-  "error": "물건을 찾을 수 없습니다."
-}
-```
-
-HTTP Status:
-
-```text
-404 Not Found
-```
-
-## 테스트
-
-JUnit과 MockMvc를 이용해 Service와 REST API를 테스트했습니다.
-
-API 테스트에서는 다음을 검증합니다.
-
-```text
-200 OK
-404 Not Found
-JSON 응답 데이터
-Content-Type
-```
-
-전체 테스트:
+- 물품 Controller / Service
+- 회원 Controller / Service
+- 대여 Service
+- API 응답 검증
 
 ```bash
 ./gradlew test
 ```
 
-## 실행
+## ▶️ Getting Started
 
 ```bash
 git clone https://github.com/JunHH3/rental-manager.git
@@ -116,8 +82,8 @@ cd rental-manager
 ./gradlew bootRun
 ```
 
-접속:
+Windows에서는 `gradlew.bat bootRun`을 사용할 수 있습니다.
 
-```text
-http://localhost:8080
-```
+> 학습용 프로젝트입니다. 현재 로그인 코드에서 비밀번호를 평문으로 비교하므로 실제 서비스 배포 전 암호화 및 인증·인가 보완이 필요합니다.
+
+[🔗 GitHub Repository](https://github.com/JunHH3/rental-manager)
